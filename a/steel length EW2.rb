@@ -168,6 +168,7 @@ h = width/6/12*12
 
 Sketchup.send_action "viewTop:"
 Sketchup.active_model.active_view.camera.perspective = false
+Sketchup.active_model.active_view.zoom_extents
 
 rescue NoMemoryError
 

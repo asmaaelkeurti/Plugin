@@ -4117,7 +4117,7 @@ end
 $basic_building = [$width,$length,$height,$pitch,$oh1,$oh2,$oj1,$oj2,$wcht]
 
 
-
+Sketchup.active_model.active_view.camera.perspective = true
 
 
 
