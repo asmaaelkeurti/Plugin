@@ -565,6 +565,8 @@ v3 = Geom::Vector3d.new(0, $gr_length,0)
 
 #facia
 v4 = Geom::Vector3d.new(0,0,-5.5)
+#overjet
+v5 = Geom::Vector3d.new(0,12,0)
 
 #roof
 f1 = gr_group.entities.add_face(origin,origin-v3,origin-v3+v2+v1,origin+v2+v1)
@@ -576,12 +578,22 @@ f3 = gr_group.entities.add_face(origin,origin+v4,origin+v4-v3,origin-v3)
 f3.material = $faciaColor
 f4 = gr_group.entities.add_face(origin-v3,origin-v3+v2+v1,origin-v3+v1+v1,origin-v3+v1+v1+v4,origin-v3+v2+v1+v4,origin-v3+v4)
 f4.material = $faciaColor
+f5 = gr_group.entities.add_face(origin-v3+v1+v1,origin-v3+v1+v1+v4,origin+v1+v1+v4,origin+v1+v1)
+f5.material = $faciaColor
+#sofit
+f6 = gr_group.entities.add_face(origin+v4,origin+v4-v3,origin+v4-v3+v2+v1,origin+v4+v2+v1)
+f6.material = $sofitColor
+f7 = gr_group.entities.add_face(origin+v4-v3+v2+v1,origin+v4+v2+v1,origin+v1+v1+v4,origin+v1+v1-v3+v4)
+f7.material = $sofitColor
+
+f8 = gr_group.entities.add_face(origin-v3+v5+v4,origin+v4+v5+v1+v2-v3,origin+v4+v5-v3+v1+v1)
+f8.back_material = $wallColor
 
 
 if($gr_wall[1] == 2)
-	f5 = gr_group.entities.add_face([0,-$gr_length,0],[6, -$gr_length,0],[6, 6-$gr_length,0],[0,6-$gr_length,0])
+	f5 = gr_group.entities.add_face([12,14-$gr_length,0],[6, 14-$gr_length,0],[6, 20-$gr_length,0],[12,20-$gr_length,0])
 	f5.pushpull $gr_height
-	f6 = gr_group.entities.add_face([$gr_width,-$gr_length,0],[$gr_width-6, -$gr_length,0],[$gr_width-6, 6-$gr_length,0],[$gr_width,6-$gr_length,0])
+	f6 = gr_group.entities.add_face([$gr_width-12,-$gr_length+14,0],[$gr_width-6, -$gr_length+14,0],[$gr_width-6, 20-$gr_length,0],[$gr_width-12,20-$gr_length,0])
 	f6.pushpull $gr_height
 end
 
