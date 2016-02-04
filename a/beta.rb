@@ -563,10 +563,20 @@ v1 = Geom::Vector3d.new($gr_width/2,0,0)
 v2 = Geom::Vector3d.new(0,0,$gr_width*$gr_pitch/12)
 v3 = Geom::Vector3d.new(0, $gr_length,0)
 
+#facia
+v4 = Geom::Vector3d.new(0,0,-5.5)
+
+#roof
 f1 = gr_group.entities.add_face(origin,origin-v3,origin-v3+v2+v1,origin+v2+v1)
 f1.material = $roofColor
 f2 = gr_group.entities.add_face(origin-v3+v2+v1,origin+v2+v1, origin+v1+v1, origin+v1+v1-v3)
 f2.material = $roofColor
+#facia
+f3 = gr_group.entities.add_face(origin,origin+v4,origin+v4-v3,origin-v3)
+f3.material = $faciaColor
+f4 = gr_group.entities.add_face(origin-v3,origin-v3+v2+v1,origin-v3+v1+v1,origin-v3+v1+v1+v4,origin-v3+v2+v1+v4,origin-v3+v4)
+f4.material = $faciaColor
+
 
 if($gr_wall[1] == 2)
 	f5 = gr_group.entities.add_face([0,-$gr_length,0],[6, -$gr_length,0],[6, 6-$gr_length,0],[0,6-$gr_length,0])
