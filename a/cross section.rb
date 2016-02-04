@@ -201,6 +201,8 @@ if interior_wall != "no"
   inside_girts[inside_girts.length-1] = inside_girts[inside_girts.length-1]-3.5
 
   inside(entities,concrete_thick,height,inside_girts,inside_dimension,inside_girts[-1]+2)
+else
+  entities.add_line([4,concrete_thick,0],[4,concrete_thick+height,0])
 end
 
 
