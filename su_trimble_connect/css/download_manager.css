@@ -1,0 +1,79 @@
+/* Copyright 2014 Trimble Navigation Ltd. */
+
+
+#footer {
+  background: #f6f6f6;
+  text-align: right;
+}
+
+#footer button {
+  margin-left: 6px;
+  background: #fff;
+}
+
+
+#file_list {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  overflow: auto;
+
+  font-size: 14px;
+  color: #333;
+}
+
+
+#file_list .item {
+  border-bottom: 1px dotted #ccc;
+}
+
+#file_list .item .content {
+  position: relative;
+  padding: 15px 15px 0 20px;
+  height: 65px; /* 15px + 65px = 80px */
+}
+
+#file_list .item .label {
+  padding-left: 15px;
+}
+
+#file_list .filesize {
+  position: absolute;
+  right: 15px;
+  top: 30px;
+  font-weight: normal;
+  color: #a5a5a5;
+  /* Hiding for now as the data isn't relevant in all cases. */
+  display: none;
+}
+
+
+#file_list .status {
+  color: #666;
+  margin-left: 1em;
+  font-style: italic;
+}
+
+
+#file_list .thumbnail {
+  width: 74px;
+  height: 48px;
+  border: 1px solid #ccc;
+  background: #fff;
+  vertical-align: middle;
+  display: inline-block;
+  text-align: center;
+  line-height: 46px;
+  overflow: hidden;
+}
+
+#file_list .thumbnail img {
+  max-width: 74px;
+  max-height: 48px;
+  border: none;
+  padding: 0;
+  margin: 0;
+  vertical-align: middle;
+}

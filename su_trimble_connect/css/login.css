@@ -1,0 +1,55 @@
+/* Copyright 2014 Trimble Navigation Ltd. */
+
+button img {
+  padding: 0 0 0 3px;
+}
+
+
+label {
+  display: block;
+  margin: 20px 0;
+}
+
+label input {
+  width: 250px;
+  display: block;
+  margin: 7px 0 0 0;
+}
+
+
+#email {
+  margin-top: 25px;
+}
+
+
+#help_links a {
+  margin-right: 5px;
+}
+
+
+#load_screen {
+  position: fixed;
+  left: 0;
+  top: 42px;
+  right: 0;
+  bottom: 0;
+
+  color: #999;
+  background: #fff;
+  background: rgba(255, 255, 255, 0.90);
+  text-align: center;
+
+  z-index: 50;
+}
+
+#load_screen > div {
+  position: fixed;
+  top: 40%;
+  left: 0;
+  right: 0;
+}
+
+#load_screen img {
+  vertical-align: middle;
+  margin-right: 1em;
+}

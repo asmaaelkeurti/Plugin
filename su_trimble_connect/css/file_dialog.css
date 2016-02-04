@@ -1,0 +1,171 @@
+/* Copyright 2014 Trimble Navigation Ltd. */
+
+
+body {
+  overflow: hidden;
+}
+
+
+#footer {
+  background: #f6f6f6;
+  text-align: right;
+}
+
+#footer button {
+  margin-left: 6px;
+  background: #fff;
+}
+
+
+#file_browser {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+
+.footer_hidden #content {
+  bottom: 0;
+}
+
+
+
+.file_browser {
+  overflow: auto;
+  font-size: 14px;
+  color: #333;
+}
+
+
+.file_browser .loading_message {
+  text-align: center;
+  padding: 1em 0.5em;
+  color: #999;
+}
+
+.file_browser .item .loading_message {
+  border-top: 1px solid #ccc;
+}
+
+.file_browser .loading_message img {
+  vertical-align: middle;
+  margin-right: 1em;
+}
+
+
+.file_browser .item {
+  overflow: hidden;
+}
+
+
+/* Project items */
+
+.file_browser > .item {
+  border-bottom: 1px solid #ccc;
+}
+
+.file_browser > .item > .children {
+  border-top: 1px solid #ccc;
+}
+
+.file_browser .item.file.invalid_selection > .content {
+  color: #aaa;
+}
+
+
+/* File and folder items */
+
+.file_browser > .item .item {
+  border-bottom: 1px dotted #ccc;
+}
+
+.file_browser > .item .item:last-child {
+  border-bottom: none;
+}
+
+.file_browser > .item .item .children {
+  border-top: 1px dotted #ccc;
+}
+
+
+.file_browser .item .label {
+  position: absolute;
+  left: 140px;
+  top: 30px;
+  /* The next rules are to ensure that the label overlaps the filesize if
+     they clash. */
+  background-color: inherit;
+  padding-right: 15px;
+  z-index: 10;
+}
+
+.file_browser .item .content {
+  position: relative;
+  padding: 15px 15px 0 45px;
+  height: 65px; /* 15px + 65px = 80px */
+  background-color: #fff;
+  background-image: url('../images/arrow-right.svg');
+  background-repeat: no-repeat;
+  background-position: 20px 32px;
+}
+
+.file_browser .item.open > .content {
+  background-image: url('../images/arrow-down.svg');
+  background-position: 18px 36px;
+}
+
+.file_browser .folder > .content {
+  font-weight: bold;
+}
+
+.file_browser .filesize {
+  position: absolute;
+  right: 15px;
+  top: 30px;
+  font-weight: normal;
+  color: #a5a5a5;
+}
+
+
+.file_browser .thumbnail {
+  width: 74px;
+  height: 48px;
+  border: 1px solid #ccc;
+  background: #fff;
+  vertical-align: middle;
+  display: inline-block;
+  text-align: center;
+  line-height: 46px;
+  overflow: hidden;
+}
+
+.file_browser .thumbnail img {
+  max-width: 74px;
+  max-height: 48px;
+  border: none;
+  padding: 0;
+  margin: 0;
+  vertical-align: middle;
+}
+
+.file_browser .item.selected > .content {
+  background-color: #fcf8e3;
+}
+
+.file_browser .children {
+  padding-left: 20px;
+}
+
+
+#filename {
+  display: block;
+  position: absolute;
+  left: 20px;
+  right: 300px;
+}
+
+#filename input {
+  width: 100%;
+}

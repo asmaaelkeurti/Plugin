@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+
+  <link rel="stylesheet" type="text/css" href="../css/core.css" />
+  <link rel="stylesheet" type="text/css" href="../css/login.css" />
+
+  <script type="text/javascript" src="../js/third-party/jquery.js"></script>
+  <script type="text/javascript" src="../js/third-party/base64.js"></script>
+  <script type="text/javascript" src="../js/core.js"></script>
+  <script type="text/javascript" src="../js/login.js"></script>
+</head>
+<body>
+
+<!--
+  This string must be added manually to the strings list as the string scraper
+  doesn't pick it up.
+-->
+<!--[if lt IE 9]>
+  <div id="ie-warning" class="localize">
+  This extension requires IE9 or newer. Older versions are unsupported.
+  </div>
+<![endif]-->
+
+<div id="header">
+  <img src="../images/logo.svg">
+</div>
+
+<div id="content">
+
+  <h1 class="localize">Sign in to Trimble connect</h1>
+
+  <p>
+    <span class="localize">Don't have an account?</span>
+    <a href="skp:sign_up" class="localize">Sign Up</a>
+  </p>
+
+  <div id="email">
+    <label>
+      <span class="localize">Email</span>
+      <input type="email" autofocus require class="localize">
+    </label>
+  </div>
+
+  <div id="password">
+    <label>
+      <span class="localize">Password</span>
+      <input type="password" required class="localize">
+    </label>
+  </div>
+
+  <p id="help_links">
+    <a href="skp:forgotten_password" class="localize">Forgot your password?</a>
+    <!--<a href="" class="localize">Resend activation email</a>-->
+  </p>
+
+</div>
+
+<div id="footer">
+  <button id="login" type="submit">
+    <span class="localize">Sign in</span>
+    <img src="../images/arrow-signin.svg">
+  </button>
+</div>
+
+</body>
+</html>
