@@ -171,8 +171,13 @@ end
 def Overhead.create
     overhead = Overhead.new
     definition= overhead.entity
-    Sketchup.active_model.place_component definition
+    definition.name = "overhead"
+    definition.set_attribute("overhead","width",@over_width)
+    definition.set_attribute("overhead","height",@over_height)
+
     $door_position.push([definition, @over_width, @over_height, @set,"overhead_"])
+    Sketchup.active_model.place_component definition, true
+    
 
 
 end

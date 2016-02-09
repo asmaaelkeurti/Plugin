@@ -59,17 +59,38 @@ $wcht = 0
     class CutWcht < Sketchup::ModelObserver
         def onPlaceComponent(instance)
             if instance.definition.name["walkdoor"]
-                if $wcht>0
-                    entities = Sketchup.active_model.entities
-                    height = instance.definition.get_attribute("walkdoor","height",80)
-                    width = instance.definition.get_attribute("walkdoor","width",36)
+                entities = Sketchup.active_model.entities
+                height = instance.definition.get_attribute("walkdoor","height",80)
+                width = instance.definition.get_attribute("walkdoor","width",36)
 
-                    p = instance.transformation.origin
+                p = instance.transformation.origin
 
+                cutWainscot(p,width,height,entities,instance)
+
+                    
+            elsif instance.definition.name["overhead"]
+
+                entities = Sketchup.active_model.entities
+                height = instance.definition.get_attribute("overhead","height",120)
+                width = instance.definition.get_attribute("overhead","width",120)
+
+                p = instance.transformation.origin
+
+                cutWainscot(p,width,height,entities,instance)
+
+
+
+            end
+                
+            
+        end
+    end
+
+    def cutWainscot(p,width,height,entities,instance)
                     if p[0] == 0
                         p1 = instance.transformation.origin + Geom::Vector3d.new(0,0,$wcht)
                         p2 = Geom::Point3d.new(p1) + Geom::Vector3d.new(0,0,height-$wcht)
-                        entities.add_line(p1,p2)
+                         entities.add_line(p1,p2) 
 
                         p3 = Geom::Point3d.new(p2) - Geom::Vector3d.new(0,width,0)
                         entities.add_line(p2,p3)
@@ -78,7 +99,7 @@ $wcht = 0
                         entities.add_line(p3,p4)
 
                         p5 = Geom::Point3d.new(p1) - Geom::Vector3d.new(0,width,0)
-                        entities.add_line(p1,p5).erase!
+                        entities.add_line(p1,p5).erase! if $wcht > 0
                     elsif p[0] == $length
 
                         p1 = instance.transformation.origin + Geom::Vector3d.new(0,0,$wcht)
@@ -92,14 +113,14 @@ $wcht = 0
                         entities.add_line(p3,p4)
 
                         p5 = Geom::Point3d.new(p1) + Geom::Vector3d.new(0,width,0)
-                        entities.add_line(p1,p5).erase!
+                        entities.add_line(p1,p5).erase! if $wcht > 0
+
 
                     elsif p[1] == 0
 
                         p1 = instance.transformation.origin + Geom::Vector3d.new(0,0,$wcht)
                         p2 = Geom::Point3d.new(p1) + Geom::Vector3d.new(0,0,height-$wcht)
-                        entities.add_line(p1,p2)
-
+                        entities.add_line(p1,p2) 
                         p3 = Geom::Point3d.new(p2) + Geom::Vector3d.new(width,0,0)
                         entities.add_line(p2,p3)
 
@@ -107,13 +128,14 @@ $wcht = 0
                         entities.add_line(p3,p4)
 
                         p5 = Geom::Point3d.new(p1) + Geom::Vector3d.new(width,0,0)
-                        entities.add_line(p1,p5).erase!
+                        entities.add_line(p1,p5).erase! if $wcht > 0
+
 
                     elsif p[1] == $width
 
                         p1 = instance.transformation.origin + Geom::Vector3d.new(0,0,$wcht)
                         p2 = Geom::Point3d.new(p1) + Geom::Vector3d.new(0,0,height-$wcht)
-                        entities.add_line(p1,p2)
+                        entities.add_line(p1,p2) if $wcht > 0
 
                         p3 = Geom::Point3d.new(p2) - Geom::Vector3d.new(width,0,0)
                         entities.add_line(p2,p3)
@@ -122,14 +144,12 @@ $wcht = 0
                         entities.add_line(p3,p4)
 
                         p5 = Geom::Point3d.new(p1) - Geom::Vector3d.new(width,0,0)
-                        entities.add_line(p1,p5).erase!
+                        entities.add_line(p1,p5).erase! if $wcht > 0
+
                     end
-                    
-                end
-            end
-            
-        end
     end
+
+
 
     Sketchup.active_model.add_observer(CutWcht.new)    
     Sketchup.active_model.add_observer(WindowCline.new)
