@@ -42,7 +42,7 @@ $wcht = 0
     class NewModel < Sketchup::AppObserver
        def onOpenModel(model)
          model.add_observer(WindowCline.new)
-         model.add_observer(MyModelObserver.new)
+         model.add_observer(CutWcht.new)
        end
      end
 
@@ -55,20 +55,40 @@ $wcht = 0
        end
      end
 
- 
-     class MyModelObserver < Sketchup::ModelObserver
-       def onPlaceComponent(instance)
-        if $wcht > 1
-            load "a/wainscot2.rb"
-            load "a/wainscot.rb"
-         end
 
-             Sketchup.active_model.remove_observer MyModelObserver
-       end
-     end
+    class CutWcht < Sketchup::ModelObserver
+        def onPlaceComponent(instance)
+            if instance.definition.name["walkdoor"]
+                if $wcht>0
+                    entities = Sketchup.active_model.entities
+                    height = instance.definition.get_attribute("walkdoor","height",80)
+                    width = instance.definition.get_attribute("walkdoor","width",36)
 
-     Sketchup.active_model.add_observer(WindowCline.new)
-    Sketchup.active_model.add_observer(MyModelObserver.new)
+                    p1 = instance.transformation.origin + Geom::Vector3d.new(0,0,$wcht)
+                    p2 = Geom::Point3d.new(p1) + Geom::Vector3d.new(0,0,height-$wcht)
+                    entities.add_line(p1,p2)
+
+                    p3 = Geom::Point3d.new(p2) + Geom::Vector3d.new(width,0,0)
+                    entities.add_line(p2,p3)
+
+                    p4 = Geom::Point3d.new(p3) - Geom::Vector3d.new(0,0,height-$wcht)
+                    entities.add_line(p3,p4)
+
+
+
+
+
+                    p5 = Geom::Point3d.new(p1) + Geom::Vector3d.new(instance.definition.get_attribute("walkdoor","width",36),0,0)
+                    entities.add_line(p1,p5).erase!
+                end
+            end
+            
+        end
+    end
+
+    Sketchup.active_model.add_observer(CutWcht.new)    
+    Sketchup.active_model.add_observer(WindowCline.new)
+    #Sketchup.active_model.add_observer(MyModelObserver.new)
 
 #      class MyToolsObserver < Sketchup::ToolsObserver
 #        def onActiveToolChanged(tools, tool_name, tool_id)
