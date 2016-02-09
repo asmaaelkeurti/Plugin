@@ -206,7 +206,7 @@ def Walkdoor.create
     definition.set_attribute("walkdoor","height",@door_height)
 
     $door_position.push([definition, @door_width, @door_height,@door_set,"walkdoor_"])
-    Sketchup.active_model.place_component definition, false 
+    Sketchup.active_model.place_component definition, true 
 
     # Sketchup.active_model.add_observer(MyModelObserver.new)
 end

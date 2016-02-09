@@ -64,22 +64,67 @@ $wcht = 0
                     height = instance.definition.get_attribute("walkdoor","height",80)
                     width = instance.definition.get_attribute("walkdoor","width",36)
 
-                    p1 = instance.transformation.origin + Geom::Vector3d.new(0,0,$wcht)
-                    p2 = Geom::Point3d.new(p1) + Geom::Vector3d.new(0,0,height-$wcht)
-                    entities.add_line(p1,p2)
+                    p = instance.transformation.origin
 
-                    p3 = Geom::Point3d.new(p2) + Geom::Vector3d.new(width,0,0)
-                    entities.add_line(p2,p3)
+                    if p[0] == 0
+                        p1 = instance.transformation.origin + Geom::Vector3d.new(0,0,$wcht)
+                        p2 = Geom::Point3d.new(p1) + Geom::Vector3d.new(0,0,height-$wcht)
+                        entities.add_line(p1,p2)
 
-                    p4 = Geom::Point3d.new(p3) - Geom::Vector3d.new(0,0,height-$wcht)
-                    entities.add_line(p3,p4)
+                        p3 = Geom::Point3d.new(p2) - Geom::Vector3d.new(0,width,0)
+                        entities.add_line(p2,p3)
 
+                        p4 = Geom::Point3d.new(p3) - Geom::Vector3d.new(0,0,height-$wcht)
+                        entities.add_line(p3,p4)
 
+                        p5 = Geom::Point3d.new(p1) - Geom::Vector3d.new(0,width,0)
+                        entities.add_line(p1,p5).erase!
+                    elsif p[0] == $length
 
+                        p1 = instance.transformation.origin + Geom::Vector3d.new(0,0,$wcht)
+                        p2 = Geom::Point3d.new(p1) + Geom::Vector3d.new(0,0,height-$wcht)
+                        entities.add_line(p1,p2)
 
+                        p3 = Geom::Point3d.new(p2) + Geom::Vector3d.new(0,width,0)
+                        entities.add_line(p2,p3)
 
-                    p5 = Geom::Point3d.new(p1) + Geom::Vector3d.new(instance.definition.get_attribute("walkdoor","width",36),0,0)
-                    entities.add_line(p1,p5).erase!
+                        p4 = Geom::Point3d.new(p3) - Geom::Vector3d.new(0,0,height-$wcht)
+                        entities.add_line(p3,p4)
+
+                        p5 = Geom::Point3d.new(p1) + Geom::Vector3d.new(0,width,0)
+                        entities.add_line(p1,p5).erase!
+
+                    elsif p[1] == 0
+
+                        p1 = instance.transformation.origin + Geom::Vector3d.new(0,0,$wcht)
+                        p2 = Geom::Point3d.new(p1) + Geom::Vector3d.new(0,0,height-$wcht)
+                        entities.add_line(p1,p2)
+
+                        p3 = Geom::Point3d.new(p2) + Geom::Vector3d.new(width,0,0)
+                        entities.add_line(p2,p3)
+
+                        p4 = Geom::Point3d.new(p3) - Geom::Vector3d.new(0,0,height-$wcht)
+                        entities.add_line(p3,p4)
+
+                        p5 = Geom::Point3d.new(p1) + Geom::Vector3d.new(width,0,0)
+                        entities.add_line(p1,p5).erase!
+
+                    elsif p[1] == $width
+
+                        p1 = instance.transformation.origin + Geom::Vector3d.new(0,0,$wcht)
+                        p2 = Geom::Point3d.new(p1) + Geom::Vector3d.new(0,0,height-$wcht)
+                        entities.add_line(p1,p2)
+
+                        p3 = Geom::Point3d.new(p2) - Geom::Vector3d.new(width,0,0)
+                        entities.add_line(p2,p3)
+
+                        p4 = Geom::Point3d.new(p3) - Geom::Vector3d.new(0,0,height-$wcht)
+                        entities.add_line(p3,p4)
+
+                        p5 = Geom::Point3d.new(p1) - Geom::Vector3d.new(width,0,0)
+                        entities.add_line(p1,p5).erase!
+                    end
+                    
                 end
             end
             
