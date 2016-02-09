@@ -64,7 +64,7 @@ def create_entity(model)
     @entity
 end
 
-@@defaults = {"w" => 4, "h" => 3, "t" => 1,"g"=>"No","c"=>"Brite","a"=>44}
+@@defaults = {"w" => 4, "h" => 3, "t" => 1,"g"=>"No","c"=>"Brite","a"=>nil}
 
 def default_parameters
     @@defaults.clone
@@ -180,7 +180,7 @@ end
 #-----------------------------------
 # Create a basic window
 def Window1.create_window(width, height, type, grid,container, color, above)
-		@above = above
+		@above = above.to_f
 		@width = width
 		@height = height
 		@type = type
@@ -317,6 +317,8 @@ def Window1.create_window(width, height, type, grid,container, color, above)
 	
 end
 
+
+
 #-----------------------------------------------------------------------
 # Prompt for parameters and then insert windows
 def Window1.create
@@ -324,15 +326,17 @@ def Window1.create
     definition= window.entity
 
     entities = Sketchup.active_model.entities
-    $c_line.push(entities.add_cline([0,0,@above],[$length,0,@above]))
-    $c_line.push(entities.add_cline([$length,0,@above],[$length,$width,@above]))
-    $c_line.push(entities.add_cline([$length,$width,@above],[0,$width,@above]))
-    $c_line.push(entities.add_cline([0,$width,@above],[0,0,@above]))
+    if @above.to_s.length != 0
+    	$c_line.push(entities.add_cline([0,0,@above],[$length,0,@above]))
+    	$c_line.push(entities.add_cline([$length,0,@above],[$length,$width,@above]))
+    	$c_line.push(entities.add_cline([$length,$width,@above],[0,$width,@above]))
+    	$c_line.push(entities.add_cline([0,$width,@above],[0,0,@above]))
+    end
 
 
     $window_data.push([definition,@above,@height,@width,@type,@color,@grid,"drag"])
 
-    Sketchup.active_model.place_component definition
+    Sketchup.active_model.place_component definition, true
 
 
 end
