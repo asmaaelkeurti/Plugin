@@ -325,6 +325,12 @@ def Window1.create
     window = Window1.new
     definition= window.entity
     definition.name = "window"
+    definition.set_attribute("window","width",@width)
+    definition.set_attribute("window","height",@height)
+    definition.set_attribute("window","above",@above)
+    definition.set_attribute("window","grid",@grid)
+    definition.set_attribute("window","type",@type)
+
 
     entities = Sketchup.active_model.entities
     if @above.to_s.length != 0
@@ -334,8 +340,8 @@ def Window1.create
     	$c_line.push(entities.add_cline([0,$width,@above],[0,0,@above]))
     end
 
-
-    $window_data.push([definition,@above,@height,@width,@type,@color,@grid,"drag"])
+    $window_data.push(definition)
+    #$window_data.push([definition,@above,@height,@width,@type,@color,@grid,"drag"])
 
     Sketchup.active_model.place_component definition, true
 

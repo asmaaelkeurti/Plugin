@@ -2736,7 +2736,7 @@ end
 if ["SW1","SW2","EW1","EW2"].include? $window_side 
   window_component = window_group.to_component
   window_component.definition.name = "Window1"
-  $window_data.push([window_component.definition,$window_height,$window_length,$window_width,$window_type,$window_color,$window_grid,"spreedsheet"])
+  #$window_data.push([window_component.definition,$window_height,$window_length,$window_width,$window_type,$window_color,$window_grid,"spreedsheet"])
 end
 
 end
