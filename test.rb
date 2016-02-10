@@ -4,6 +4,7 @@ require 'win32ole'
 plugins_menu = UI.menu("Plugins")
 
 plugins_menu.add_item("Load Excel") {load 'a/beta.rb'}
+plugins_menu.add_item("Export Window Data") {load 'a/export.rb'}
 plugins_menu.add_separator
 plugins_menu.add_item("Windows"){load "a/windows.rb"}
 plugins_menu.add_item("Overhead"){load "a/overhead.rb"}
@@ -39,152 +40,117 @@ $awning_data = []
 $wcht = 0
 
 
-    class NewModel < Sketchup::AppObserver
-       def onOpenModel(model)
-         model.add_observer(WindowCline.new)
-         model.add_observer(CutWcht.new)
-       end
-     end
-
-     Sketchup.add_observer(NewModel.new)
-
-     class WindowCline < Sketchup::ModelObserver
-       def onPlaceComponent(instance)
-       		$c_line.each{|x| x.erase! if x.valid?} 
-            Sketchup.active_model.remove_observer WindowCline
-       end
-     end
-
-
-    class CutWcht < Sketchup::ModelObserver
-        def onPlaceComponent(instance)
-            if instance.definition.name["walkdoor"]
-                entities = Sketchup.active_model.entities
-                height = instance.definition.get_attribute("walkdoor","height",80)
-                width = instance.definition.get_attribute("walkdoor","width",36)
-
-                p = instance.transformation.origin
-
-                cutWainscot(p,width,height,entities,instance)
-
-                    
-            elsif instance.definition.name["overhead"]
-
-                entities = Sketchup.active_model.entities
-                height = instance.definition.get_attribute("overhead","height",120)
-                width = instance.definition.get_attribute("overhead","width",120)
-
-                p = instance.transformation.origin
-
-                cutWainscot(p,width,height,entities,instance)
+class NewModel < Sketchup::AppObserver
+   def onOpenModel(model)
+     model.add_observer(WindowCline.new)
+     model.add_observer(CutWcht.new)
+   end
+end
 
 
 
-            end
-                
-            
+class WindowCline < Sketchup::ModelObserver
+   def onPlaceComponent(instance)
+   		$c_line.each{|x| x.erase! if x.valid?} 
+        Sketchup.active_model.remove_observer WindowCline
+   end
+end
+
+
+class CutWcht < Sketchup::ModelObserver
+    def onPlaceComponent(instance)
+        if instance.definition.name["walkdoor"]
+            entities = Sketchup.active_model.entities
+            height = instance.definition.get_attribute("walkdoor","height",80)
+            width = instance.definition.get_attribute("walkdoor","width",36)
+
+            p = instance.transformation.origin
+
+            cutWainscot(p,width,height,entities,instance)
+
+        elsif instance.definition.name["overhead"]
+            entities = Sketchup.active_model.entities
+            height = instance.definition.get_attribute("overhead","height",120)
+            width = instance.definition.get_attribute("overhead","width",120)
+
+            p = instance.transformation.origin
+
+            cutWainscot(p,width,height,entities,instance)
         end
     end
+end
 
-    def cutWainscot(p,width,height,entities,instance)
-                    if p[0] == 0
-                        p1 = instance.transformation.origin + Geom::Vector3d.new(0,0,$wcht)
-                        p2 = Geom::Point3d.new(p1) + Geom::Vector3d.new(0,0,height-$wcht)
-                         entities.add_line(p1,p2) 
+def cutWainscot(p,width,height,entities,instance)
+    if p[0] == 0
+        p1 = instance.transformation.origin + Geom::Vector3d.new(0,0,$wcht)
+        p2 = Geom::Point3d.new(p1) + Geom::Vector3d.new(0,0,height-$wcht)
+         entities.add_line(p1,p2) 
 
-                        p3 = Geom::Point3d.new(p2) - Geom::Vector3d.new(0,width,0)
-                        entities.add_line(p2,p3)
+        p3 = Geom::Point3d.new(p2) - Geom::Vector3d.new(0,width,0)
+        entities.add_line(p2,p3)
 
-                        p4 = Geom::Point3d.new(p3) - Geom::Vector3d.new(0,0,height-$wcht)
-                        entities.add_line(p3,p4)
+        p4 = Geom::Point3d.new(p3) - Geom::Vector3d.new(0,0,height-$wcht)
+        entities.add_line(p3,p4)
 
-                        p5 = Geom::Point3d.new(p1) - Geom::Vector3d.new(0,width,0)
-                        entities.add_line(p1,p5).erase! if $wcht > 0
-                    elsif p[0] == $length
+        p5 = Geom::Point3d.new(p1) - Geom::Vector3d.new(0,width,0)
+        entities.add_line(p1,p5).erase! if $wcht > 0
+    elsif p[0] == $length
 
-                        p1 = instance.transformation.origin + Geom::Vector3d.new(0,0,$wcht)
-                        p2 = Geom::Point3d.new(p1) + Geom::Vector3d.new(0,0,height-$wcht)
-                        entities.add_line(p1,p2)
+        p1 = instance.transformation.origin + Geom::Vector3d.new(0,0,$wcht)
+        p2 = Geom::Point3d.new(p1) + Geom::Vector3d.new(0,0,height-$wcht)
+        entities.add_line(p1,p2)
 
-                        p3 = Geom::Point3d.new(p2) + Geom::Vector3d.new(0,width,0)
-                        entities.add_line(p2,p3)
+        p3 = Geom::Point3d.new(p2) + Geom::Vector3d.new(0,width,0)
+        entities.add_line(p2,p3)
 
-                        p4 = Geom::Point3d.new(p3) - Geom::Vector3d.new(0,0,height-$wcht)
-                        entities.add_line(p3,p4)
+        p4 = Geom::Point3d.new(p3) - Geom::Vector3d.new(0,0,height-$wcht)
+        entities.add_line(p3,p4)
 
-                        p5 = Geom::Point3d.new(p1) + Geom::Vector3d.new(0,width,0)
-                        entities.add_line(p1,p5).erase! if $wcht > 0
-
-
-                    elsif p[1] == 0
-
-                        p1 = instance.transformation.origin + Geom::Vector3d.new(0,0,$wcht)
-                        p2 = Geom::Point3d.new(p1) + Geom::Vector3d.new(0,0,height-$wcht)
-                        entities.add_line(p1,p2) 
-                        p3 = Geom::Point3d.new(p2) + Geom::Vector3d.new(width,0,0)
-                        entities.add_line(p2,p3)
-
-                        p4 = Geom::Point3d.new(p3) - Geom::Vector3d.new(0,0,height-$wcht)
-                        entities.add_line(p3,p4)
-
-                        p5 = Geom::Point3d.new(p1) + Geom::Vector3d.new(width,0,0)
-                        entities.add_line(p1,p5).erase! if $wcht > 0
+        p5 = Geom::Point3d.new(p1) + Geom::Vector3d.new(0,width,0)
+        entities.add_line(p1,p5).erase! if $wcht > 0
 
 
-                    elsif p[1] == $width
+    elsif p[1] == 0
 
-                        p1 = instance.transformation.origin + Geom::Vector3d.new(0,0,$wcht)
-                        p2 = Geom::Point3d.new(p1) + Geom::Vector3d.new(0,0,height-$wcht)
-                        entities.add_line(p1,p2) if $wcht > 0
+        p1 = instance.transformation.origin + Geom::Vector3d.new(0,0,$wcht)
+        p2 = Geom::Point3d.new(p1) + Geom::Vector3d.new(0,0,height-$wcht)
+        entities.add_line(p1,p2) 
+        p3 = Geom::Point3d.new(p2) + Geom::Vector3d.new(width,0,0)
+        entities.add_line(p2,p3)
 
-                        p3 = Geom::Point3d.new(p2) - Geom::Vector3d.new(width,0,0)
-                        entities.add_line(p2,p3)
+        p4 = Geom::Point3d.new(p3) - Geom::Vector3d.new(0,0,height-$wcht)
+        entities.add_line(p3,p4)
 
-                        p4 = Geom::Point3d.new(p3) - Geom::Vector3d.new(0,0,height-$wcht)
-                        entities.add_line(p3,p4)
+        p5 = Geom::Point3d.new(p1) + Geom::Vector3d.new(width,0,0)
+        entities.add_line(p1,p5).erase! if $wcht > 0
 
-                        p5 = Geom::Point3d.new(p1) - Geom::Vector3d.new(width,0,0)
-                        entities.add_line(p1,p5).erase! if $wcht > 0
 
-                    end
+    elsif p[1] == $width
+
+        p1 = instance.transformation.origin + Geom::Vector3d.new(0,0,$wcht)
+        p2 = Geom::Point3d.new(p1) + Geom::Vector3d.new(0,0,height-$wcht)
+        entities.add_line(p1,p2) if $wcht > 0
+
+        p3 = Geom::Point3d.new(p2) - Geom::Vector3d.new(width,0,0)
+        entities.add_line(p2,p3)
+
+        p4 = Geom::Point3d.new(p3) - Geom::Vector3d.new(0,0,height-$wcht)
+        entities.add_line(p3,p4)
+
+        p5 = Geom::Point3d.new(p1) - Geom::Vector3d.new(width,0,0)
+        entities.add_line(p1,p5).erase! if $wcht > 0
+
     end
+end
+
+
+Sketchup.add_observer(NewModel.new)
+Sketchup.active_model.add_observer(CutWcht.new)    
+Sketchup.active_model.add_observer(WindowCline.new)
 
 
 
-    Sketchup.active_model.add_observer(CutWcht.new)    
-    Sketchup.active_model.add_observer(WindowCline.new)
-    #Sketchup.active_model.add_observer(MyModelObserver.new)
 
-#      class MyToolsObserver < Sketchup::ToolsObserver
-#        def onActiveToolChanged(tools, tool_name, tool_id)
-
-#             if $moved
-#                 output
-#                 $moved = false
-#             end
-
-
-#             if tool_name.to_s == "MoveTool"
-#                         $moved = true
-#             end
-
-
-#        end
-#      end
-
-#      class MyDefObserver < Sketchup::DefinitionObserver
-#         def onComponentInstanceRemoved(definition, instance)
-#             #UI.messagebox definition.name[0..5]
-#             if definition.name[0..5] == "Window"
-#                 UI.messagebox("onComponentInstanceRemoved: " + definition.name)
-#             end
-#         end
-#      end
-
-     
-
-
-#     Sketchup.active_model.tools.add_observer(MyToolsObserver.new)
 
 
       toolbar = UI::Toolbar.new "test"

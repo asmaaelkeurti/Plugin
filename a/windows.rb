@@ -324,6 +324,7 @@ end
 def Window1.create
     window = Window1.new
     definition= window.entity
+    definition.name = "window"
 
     entities = Sketchup.active_model.entities
     if @above.to_s.length != 0
