@@ -11,8 +11,12 @@ for i in 0..entities.length
 end
 
 application = WIN32OLE.new('Excel.Application')
-if !File.directory?("C:\\Program Files (x86)\\Google\\Google SketchUp 8\\Plugins\\a")
-  workbook = application.Workbooks.Open("C:\\Users\\"+ENV['USERNAME']+"\\AppData\\Roaming\\SketchUp\\SketchUp 2016\\SketchUp\\Plugins\\a\\test")
+
+if File.exist?("C:\\Users\\" + ENV['USERNAME'] + "\\Documents\\test.xlsx")
+  workbook = application.Workbooks.Open("C:\\Users\\" + ENV['USERNAME'] + "\\Documents\\test.xlsx")
+elsif !File.directory?("C:\\Program Files (x86)\\Google\\Google SketchUp 8\\Plugins\\a")
+  #workbook = application.Workbooks.Open("C:\\Users\\"+ENV['USERNAME']+"\\AppData\\Roaming\\SketchUp\\SketchUp 2016\\SketchUp\\Plugins\\a\\test")
+  workbook = application.Workbooks.Open(Sketchup.find_support_file('Plugins')+'\\a\\test')
 else
   workbook = application.Workbooks.Open("C:\\Program Files (x86)\\Google\\Google SketchUp 8\\Plugins\\a\\test")
 end

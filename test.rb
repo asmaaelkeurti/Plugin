@@ -1,29 +1,40 @@
 require 'win32ole'
 
+Sketchup.template = Sketchup.find_support_file('Plugins') + "/a/BLANK3D.skp"
 
 plugins_menu = UI.menu("Plugins")
-
+plugins_menu.add_separator
+plugins_menu.add_separator
+plugins_menu.add_separator
+plugins_menu.add_separator
 plugins_menu.add_item("Load Excel") {load 'a/beta.rb'}
 plugins_menu.add_item("Export Window Data") {load 'a/export.rb'}
 plugins_menu.add_separator
 plugins_menu.add_item("Windows"){load "a/windows.rb"}
-plugins_menu.add_item("Overhead"){load "a/overhead.rb"}
-plugins_menu.add_item("Walkdoor"){load "a/walkdoor.rb"}
-plugins_menu.add_item("Awning"){load "a/awning.rb"}
-plugins_menu.add_item("Hydraulic"){load "a/hydraulic.rb"}
-plugins_menu.add_item("SlideDoor"){load "a/slideDoor.rb"}
 plugins_menu.add_separator
-plugins_menu.add_item("Basic Building 1"){load "a/basic1.rb"}
-plugins_menu.add_item("Basic Building 2"){load "a/basic2.rb"}
-plugins_menu.add_item("Dormer"){load "a/dormers.rb"}
-plugins_menu.add_item("Cupola"){load "a/cupola.rb"}
-plugins_menu.add_separator
-plugins_menu.add_item("Sidelight1"){load "a/sidelight1.rb"}
-plugins_menu.add_item("Sidelight2"){load "a/sidelight2.rb"}
-plugins_menu.add_item("steel length EW1"){load "a/steel length EW1.rb"}
-plugins_menu.add_item("steel length EW2"){load "a/steel length EW2.rb"}
-plugins_menu.add_item("cross section"){load "a/cross section.rb"}
-plugins_menu.add_item("floor plan"){load "a/floor.rb"}
+
+sub3d = plugins_menu.add_submenu("3D Items")
+sub3d.add_item("Overhead"){load "a/overhead.rb"}
+sub3d.add_item("Walkdoor"){load "a/walkdoor.rb"}
+sub3d.add_item("Awning"){load "a/awning.rb"}
+sub3d.add_item("Hydraulic"){load "a/hydraulic.rb"}
+sub3d.add_item("SlideDoor"){load "a/slideDoor.rb"}
+sub3d.add_item("Dormer"){load "a/dormers.rb"}
+sub3d.add_item("Cupola"){load "a/cupola.rb"}
+sub3d.add_separator
+sub3d.add_item("Basic Building 1"){load "a/basic1.rb"}
+sub3d.add_item("Basic Building 2"){load "a/basic2.rb"}
+
+sub3d.add_separator
+sub3d.add_item("Sidelight1"){load "a/sidelight1.rb"}
+sub3d.add_item("Sidelight2"){load "a/sidelight2.rb"}
+
+
+sub2d = plugins_menu.add_submenu("2D Drawing")
+sub2d.add_item("steel length EW1"){load "a/steel length EW1.rb"}
+sub2d.add_item("steel length EW2"){load "a/steel length EW2.rb"}
+sub2d.add_item("cross section"){load "a/cross section.rb"}
+sub3d.add_item("floor plan"){load "a/floor.rb"}
 #plugins_menu.add_item("Wainscot"){load "a/wainscot.rb"}
 #plugins_menu.add_item("Wainscot2"){load "a/wainscot2.rb"}
 
@@ -81,6 +92,7 @@ class CutWcht < Sketchup::ModelObserver
 end
 
 def cutWainscot(p,width,height,entities,instance)
+    Sketchup.break_edges = true
     if p[0] == 0
         p1 = instance.transformation.origin + Geom::Vector3d.new(0,0,$wcht)
         p2 = Geom::Point3d.new(p1) + Geom::Vector3d.new(0,0,height-$wcht)
