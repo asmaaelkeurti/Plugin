@@ -2735,7 +2735,17 @@ end
 #window_group = entities.add_group window_array
 if ["SW1","SW2","EW1","EW2"].include? $window_side 
   window_component = window_group.to_component
-  window_component.definition.name = "Window1"
+  definition = window_component.definition
+  definition.name = "Window"
+  definition.set_attribute("window","width",$window_width)
+  definition.set_attribute("window","height",$window_length)
+  definition.set_attribute("window","above",$window_height)
+  definition.set_attribute("window","grid",$window_grid)
+  definition.set_attribute("window","type",$window_type)
+  definition.set_attribute("window","from","spreedsheet")
+
+
+  $window_data.push(definition)
   #$window_data.push([window_component.definition,$window_height,$window_length,$window_width,$window_type,$window_color,$window_grid,"spreedsheet"])
 end
 

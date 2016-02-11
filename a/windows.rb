@@ -330,6 +330,7 @@ def Window1.create
     definition.set_attribute("window","above",@above)
     definition.set_attribute("window","grid",@grid)
     definition.set_attribute("window","type",@type)
+    definition.set_attribute("window","from","drag")
 
 
     entities = Sketchup.active_model.entities
