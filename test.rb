@@ -37,8 +37,8 @@ sub2d.add_item("cross section"){load "a/cross section.rb"}
 sub3d.add_item("floor plan"){load "a/floor.rb"}
 #plugins_menu.add_item("Wainscot"){load "a/wainscot.rb"}
 #plugins_menu.add_item("Wainscot2"){load "a/wainscot2.rb"}
-
-
+plugins_menu.add_separator
+plugins_menu.add_item("Update"){load "a/update.rb"}
 
 $door_position = []
 $wainscot_line = []
