@@ -165,34 +165,6 @@ Sketchup.active_model.add_observer(WindowCline.new)
 
 
 
-      toolbar = UI::Toolbar.new "test"
-     # This toolbar icon simply displays Hello World on the screen
-     cmd = UI::Command.new("Export") {
-       output
-     }
-     cmd.set_validation_proc {
-    fileObj = File.new("C:\\Program Files (x86)\\Google\\Google SketchUp 8\\Plugins\\a\\asmaa","r")
-    $load = fileObj.gets.include?("2")
-    fileObj.close
-  if $load
-    fileObj = File.new("C:\\Program Files (x86)\\Google\\Google SketchUp 8\\Plugins\\a\\asmaa","w")
-    fileObj.write("0")
-    fileObj.close
-    output
-
-     MF_GRAYED
-   else
-     MF_ENABLED
-   end
- }
-     cmd.small_icon = "ToolPencilSmall.png"
-     cmd.large_icon = "ToolPencilLarge.png"
-     cmd.tooltip = "Export model"
-     cmd.status_bar_text = "Testing the toolbars class"
-     cmd.menu_text = "Export"
-     toolbar = toolbar.add_item cmd
-     toolbar.show
-
 
 def output
 #window
