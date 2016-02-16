@@ -1,20 +1,27 @@
 
-prompts = ["length", "width","height","pitch","overhang 1", "ovehang 2", "overjet 1", "overjet2"]
-values = [80, 60,20,3.5,2,2,2,2]
+prompts = ["Width", "length","height","pitch","overhang 1", "ovehang 2", "overjet 1", "overjet2","Wainscot Height*"]
+values = [60,80,20,3.5,2,2,2,2,36]
 popups = [nil, nil,nil,nil,nil,nil,nil,nil]
-results = inputbox(prompts, values, popups)
+results = inputbox(prompts, values, popups,"(* values will not import)")
 
-$length = results[0]*12
-$width = results[1]*12
+$door_position = Array.new
+
+$length = results[1]*12
+$width = results[0]*12
 $height = results[2]*12
 $pitch = results[3]
 $oh1 = results[4]*12
 $oh2 = results[5]*12
 $oj1 = results[6]*12
 $oj2 = results[7]*12
-$wcht = 0
+$wcht = results[8]
+
+
+$basic_building = [$width,$length,$height,$pitch,$oh1,$oh2,$oj1,$oj2,$wcht]
+
+
 $gambrel_height = 0
-$concrete_height = 0
+$concrete_height = 0 
 $concrete_color = "grey"
 $wallColor = "white"
 $faciaColor = "white"
@@ -43,7 +50,7 @@ $height2 = $height
     else
       $height1 = $height1 + $heel + 1.25-7
     end 
-	if ($oh2 > 0) 
+  if ($oh2 > 0) 
       $height2 = $height2+$heel-($pitch*$oh2/12)-3.75-2
     else
       $height2 = $height2 + $heel + 1.25-7
@@ -76,17 +83,17 @@ def get_ew2_points(posX, posY, posZ)
    
       pts.push([posX, posY, posZ])
       pts.push([posX, (posY + $width), posZ])
-	  pts.push([posX, (posY + $width), (posZ + $height2)])
-	if ($oh2 > 0)
-	  pts.push([posX, (posY + $width + $oh2), (posZ + $height2)])
-	end
+    pts.push([posX, (posY + $width), (posZ + $height2)])
+  if ($oh2 > 0)
+    pts.push([posX, (posY + $width + $oh2), (posZ + $height2)])
+  end
     pts.push([posX, (posY + ($width/2)), (posZ + $height2 + $gableht2)])
     
-	if($oh1 > 0)
-	  pts.push([posX, (posY-$oh1), (posZ + $height1)])
+  if($oh1 > 0)
+    pts.push([posX, (posY-$oh1), (posZ + $height1)])
       
     end
-	pts.push([posX, posY, (posZ + $height1)])
+  pts.push([posX, posY, (posZ + $height1)])
     return pts
   end
   def get_facia_ew1_points(posX, posY, posZ)
@@ -269,7 +276,7 @@ def get_ew2_points(posX, posY, posZ)
     pts[0] = [posX - $oj1, posY + $oh2, posZ]
     pts[1] = [posX - $oj1, posY - ($width / 2), (posZ + $gableht2)]
     pts[2] = [posX + $length + $oj2, posY - ($width / 2), (posZ + $gableht2)]
-    pts[3] = [posX + $length + $oj2, posY + $oh2, posZ]	 
+    pts[3] = [posX + $length + $oj2, posY + $oh2, posZ]  
 
     return pts
   end
@@ -302,7 +309,7 @@ def get_ew2_points(posX, posY, posZ)
     pts[3] = [posX, posY + $width - $corner, posZ]
 
     return pts
-  end	
+  end 
   def get_wainscot_ew2_points(posX, posY, posZ)
     pts = []
 
@@ -323,7 +330,7 @@ def get_ew2_points(posX, posY, posZ)
     return $oj1 > 0
   end 
   def has_overjet2?
-	return $oj2 > 0
+  return $oj2 > 0
   end
   def has_wainscot?
     return $wcht > 0
@@ -362,23 +369,23 @@ def add_3d_letter_ew2(entities, string, yorigin, zorigin, xorigin)
 
   # Add G first
   logo_group.entities.add_3d_text(string, TextAlignCenter, "Arial", false, false, 10.0, 0.0, 0, true, 1.0)
-	logo_group.material = $GBcolor
+  logo_group.material = $GBcolor
 end
 
 def get_ew1_points(posX, posY, posZ)
     pts = []
-	pts.push([posX, posY, posZ])
-	pts.push([posX, (posY + $width), posZ])
-	if($oh2>0)
-		pts.push([posX, (posY + $width), (posZ + $height2)])
-	end
-	pts.push([posX, (posY + $width + $oh2), (posZ + $height2)])
-	pts.push([posX, (posY + ($width/2)), (posZ + $height2 + $gableht2)])
-	
-	if($oh1>0)
-		  pts.push([posX, (posY - $oh1), (posZ + $height1)])
-	end
-	pts.push([posX, posY, (posZ + $height1)])
+  pts.push([posX, posY, posZ])
+  pts.push([posX, (posY + $width), posZ])
+  if($oh2>0)
+    pts.push([posX, (posY + $width), (posZ + $height2)])
+  end
+  pts.push([posX, (posY + $width + $oh2), (posZ + $height2)])
+  pts.push([posX, (posY + ($width/2)), (posZ + $height2 + $gableht2)])
+  
+  if($oh1>0)
+      pts.push([posX, (posY - $oh1), (posZ + $height1)])
+  end
+  pts.push([posX, posY, (posZ + $height1)])
     return pts
  end
 
@@ -401,21 +408,21 @@ logo_y_value = (($width + 15) / 2)
     pt3 = [($posX + $length + $apron), ($posY + $width + $apron), $posZ]
     pt4 = [($posX - $apron), ($posY + $width + $apron), $posZ]
     new_face = entities.add_face pt1, pt2, pt3, pt4
-	materials = model.materials
-	# m1 = materials.add('Vegetation_Blur7')
-	# save_path = Sketchup.find_support_file "Vegetation/grass.jpg", "Materials"
-	# m1.texture = save_path
-	new_face.back_material = $grass_color
+  materials = model.materials
+  # m1 = materials.add('Vegetation_Blur7')
+  # save_path = Sketchup.find_support_file "Vegetation/grass.jpg", "Materials"
+  # m1.texture = save_path
+  new_face.back_material = $grass_color
   end
   
   
   
   
-  add_3d_letter_ew1 entities, "G", logo_y_value, logo_z_value
-  add_3d_letter_ew2 entities, "B", logo_y_value -7.5, logo_z_value, $length
+  # add_3d_letter_ew1 entities, "G", logo_y_value, logo_z_value
+  # add_3d_letter_ew2 entities, "B", logo_y_value -7.5, logo_z_value, $length
 
-  add_3d_letter_ew1 entities, "B", logo_y_value - 7.5, logo_z_value - 7.5
-  add_3d_letter_ew2 entities, "G", logo_y_value - 15, logo_z_value + 7.5, $length
+  # add_3d_letter_ew1 entities, "B", logo_y_value - 7.5, logo_z_value - 7.5
+  # add_3d_letter_ew2 entities, "G", logo_y_value - 15, logo_z_value + 7.5, $length
 
 
 
@@ -538,11 +545,11 @@ logo_y_value = (($width + 15) / 2)
     ### Draw the wainscot
     wainscotSW1 = entities.add_face get_wainscot_sw1_points($posX, $posY, $posZ)
     wainscotSW1.material = $wainscotColor
-	wainscotSW1.back_material = $wainscotColor
+  wainscotSW1.back_material = $wainscotColor
 
     wainscotSW2 = entities.add_face get_wainscot_sw2_points($posX, $posY, $posZ)
     wainscotSW2.material = $wainscotColor
-	wainscotSW2.back_material = $wainscotColor
+  wainscotSW2.back_material = $wainscotColor
     
     wainscotEW1 = entities.add_face get_wainscot_ew1_points($posX, $posY, $posZ)
     wainscotEW1.material = $wainscotColor
@@ -550,133 +557,135 @@ logo_y_value = (($width + 15) / 2)
 
     wainscotEW2 = entities.add_face get_wainscot_ew2_points($posX, $posY, $posZ)
     wainscotEW2.material = $wainscotColor
-	wainscotEW2.back_material = $wainscotColor
+  wainscotEW2.back_material = $wainscotColor
 
-	a = entities.add_line([0,0,$wcht],[0,$corner,$wcht])
-	a.faces[0].back_material = $wainscotColor
-	entities.add_line([0,$corner,0],[0,$corner,$wcht]).erase!
+  a = entities.add_line([0,0,$wcht],[0,$corner,$wcht])
+  a.faces[0].back_material = $wainscotColor
+  entities.add_line([0,$corner,0],[0,$corner,$wcht]).erase!
 
-	a = entities.add_line([0,0,$wcht],[$corner,0,$wcht])
-	a.faces[1].back_material = $wainscotColor
-	entities.add_line([$corner,0,0],[$corner,0,$wcht]).erase!
+  a = entities.add_line([0,0,$wcht],[$corner,0,$wcht])
+  a.faces[1].back_material = $wainscotColor
+  entities.add_line([$corner,0,0],[$corner,0,$wcht]).erase!
 
-	a = entities.add_line([$length,0,$wcht],[$length-$corner,0,$wcht])
-	a.faces[0].back_material = $wainscotColor
-	entities.add_line([$length-$corner,0,0],[$length-$corner,0,$wcht]).erase!
-	
-	a = entities.add_line([$length,$corner,$wcht],[$length,0,$wcht])
-	a.faces[0].back_material = $wainscotColor
-	entities.add_line([$length,$corner,$wcht],[$length,$corner,0]).erase!
-	
-	a = entities.add_line([$length,$width,$wcht],[$length-$corner,$width,$wcht])
-	a.faces[1].back_material = $wainscotColor
-	entities.add_line([$length-$corner,$width,0],[$length-$corner,$width,$wcht]).erase!
-	
-	a = entities.add_line([$length,$width,$wcht],[$length,$width-$corner,$wcht])
-	a.faces[0].back_material = $wainscotColor
-	entities.add_line([$length,$width-$corner,$wcht],[$length,$width-$corner,0]).erase!
-	
-	a = entities.add_line([0,$width,$wcht],[0,$width-$corner,$wcht])
-	a.faces[1].back_material = $wainscotColor
-	entities.add_line([0,$width-$corner,0],[0,$width-$corner,$wcht]).erase!
-	
-	a = entities.add_line([0,$width,$wcht],[$corner,$width,$wcht])
-	a.faces[0].back_material = $wainscotColor
-	entities.add_line([$corner,$width,0],[$corner,$width,$wcht]).erase!
-	
-	
-	if($concrete_height>0)
-		a = entities.add_line([0,0,$concrete_height],[$length,0,$concrete_height])
-		a.faces[1].back_material = $concrete_color
-		a.faces[1].material = $concrete_color
-		
-		a = entities.add_line([$length,0, $concrete_height],[$length,$width,$concrete_height])
-		a.faces[1].back_material = $concrete_color
-		a.faces[1].material = $concrete_color
-		
-		a = entities.add_line([$length,$width,$concrete_height],[0,$width,$concrete_height])
-		a.faces[1].back_material = $concrete_color
-		a.faces[1].material = $concrete_color
-		
-		a = entities.add_line([0,$width,$concrete_height],[0,0,$concrete_height])
-		a.faces[1].back_material = $concrete_color
-		a.faces[1].material = $concrete_color	
-	end
+  a = entities.add_line([$length,0,$wcht],[$length-$corner,0,$wcht])
+  a.faces[0].back_material = $wainscotColor
+  entities.add_line([$length-$corner,0,0],[$length-$corner,0,$wcht]).erase!
+  
+  a = entities.add_line([$length,$corner,$wcht],[$length,0,$wcht])
+  a.faces[0].back_material = $wainscotColor
+  entities.add_line([$length,$corner,$wcht],[$length,$corner,0]).erase!
+  
+  a = entities.add_line([$length,$width,$wcht],[$length-$corner,$width,$wcht])
+  a.faces[1].back_material = $wainscotColor
+  entities.add_line([$length-$corner,$width,0],[$length-$corner,$width,$wcht]).erase!
+  
+  a = entities.add_line([$length,$width,$wcht],[$length,$width-$corner,$wcht])
+  a.faces[0].back_material = $wainscotColor
+  entities.add_line([$length,$width-$corner,$wcht],[$length,$width-$corner,0]).erase!
+  
+  a = entities.add_line([0,$width,$wcht],[0,$width-$corner,$wcht])
+  a.faces[1].back_material = $wainscotColor
+  entities.add_line([0,$width-$corner,0],[0,$width-$corner,$wcht]).erase!
+  
+  a = entities.add_line([0,$width,$wcht],[$corner,$width,$wcht])
+  a.faces[0].back_material = $wainscotColor
+  entities.add_line([$corner,$width,0],[$corner,$width,$wcht]).erase!
+  
+  
+  if($concrete_height>0)
+    a = entities.add_line([0,0,$concrete_height],[$length,0,$concrete_height])
+    a.faces[1].back_material = $concrete_color
+    a.faces[1].material = $concrete_color
+    
+    a = entities.add_line([$length,0, $concrete_height],[$length,$width,$concrete_height])
+    a.faces[1].back_material = $concrete_color
+    a.faces[1].material = $concrete_color
+    
+    a = entities.add_line([$length,$width,$concrete_height],[0,$width,$concrete_height])
+    a.faces[1].back_material = $concrete_color
+    a.faces[1].material = $concrete_color
+    
+    a = entities.add_line([0,$width,$concrete_height],[0,0,$concrete_height])
+    a.faces[1].back_material = $concrete_color
+    a.faces[1].material = $concrete_color 
+  end
   end
   
 
-	if($gambrel_height>0)
-		top = Geom::Point3d.new(-$oj1,$width/2,$height1+$gableht1)
-		v1 = Geom::Vector3d.new(0,0,-$brian*$pitch/12)
-		v2 = Geom::Vector3d.new(0,$brian,0)
-		v3 = Geom::Vector3d.new($length+$oj1+$oj2,0,0)
-		v4 = Geom::Vector3d.new(0,0,+$facia)
-		pt1 = top + v1 + v2
-		pt2 = top + v1 + v2 + v3
+  if($gambrel_height>0)
+    top = Geom::Point3d.new(-$oj1,$width/2,$height1+$gableht1)
+    v1 = Geom::Vector3d.new(0,0,-$brian*$pitch/12)
+    v2 = Geom::Vector3d.new(0,$brian,0)
+    v3 = Geom::Vector3d.new($length+$oj1+$oj2,0,0)
+    v4 = Geom::Vector3d.new(0,0,+$facia)
+    pt1 = top + v1 + v2
+    pt2 = top + v1 + v2 + v3
 
-		p3 = top + v1 - v2
-		p4 = top + v1 - v2 + v3
+    p3 = top + v1 - v2
+    p4 = top + v1 - v2 + v3
 
-		t = Geom::Transformation.new [0,0, $gambrel_height]
+    t = Geom::Transformation.new [0,0, $gambrel_height]
 
-		line2 = entities.add_line([-$oj1,$width/2,$height1+$gableht1+$facia],[$length+$oj2, $width/2,$height1+$gableht1+$facia])
-		line4 = entities.add_line(pt1+v4,pt2+v4)
-		line6 = entities.add_line(p3+v4, p4+v4)
-		entities.transform_entities t, line2
-
-
-
-		if($oj1 == 0)
-			$oj1 = 1
-		end
-
-			line111 = entities.add_line(top, top-Geom::Vector3d.new(-$oj1,0,0))
-			line333 = entities.add_line(pt1,pt1-Geom::Vector3d.new(-$oj1,0,0))
-			line555 = entities.add_line(p3,p3-Geom::Vector3d.new(-$oj1,0,0))
-
-		if($oj2==0)
-			$oj2 = 1
-		end
-
-			line11 = entities.add_line(top+v3, top+v3-Geom::Vector3d.new($oj2,0,0))
-			line33 = entities.add_line(pt1+v3,pt1+v3-Geom::Vector3d.new($oj2,0,0))
-			line55 = entities.add_line(p3+v3,p3+v3-Geom::Vector3d.new($oj2,0,0))
-
-
-		entities.transform_entities t, line4
-		entities.transform_entities t, line6
-
-			entities.transform_entities t, line111
-			entities.transform_entities t, line333
-			entities.transform_entities t, line555
+    line2 = entities.add_line([-$oj1,$width/2,$height1+$gableht1+$facia],[$length+$oj2, $width/2,$height1+$gableht1+$facia])
+    line4 = entities.add_line(pt1+v4,pt2+v4)
+    line6 = entities.add_line(p3+v4, p4+v4)
+    entities.transform_entities t, line2
 
 
 
-			entities.transform_entities t, line11
-			entities.transform_entities t, line33
-			entities.transform_entities t, line55
+    if($oj1 == 0)
+      $oj1 = 1
+    end
 
-		end
+      line111 = entities.add_line(top, top-Geom::Vector3d.new(-$oj1,0,0))
+      line333 = entities.add_line(pt1,pt1-Geom::Vector3d.new(-$oj1,0,0))
+      line555 = entities.add_line(p3,p3-Geom::Vector3d.new(-$oj1,0,0))
 
-if($wcht>0)		
-	a = entities.add_line([0,5.5,0],[0,5.5,$wcht])
-	a.faces[1].material = $wainscot_corner
-	a = entities.add_line([5.5,0,0],[5.5,0,$wcht])
-	a.faces[0].material = $wainscot_corner
-	a = entities.add_line([$length-5.5,0,0],[$length-5.5,0,$wcht])
-	a.faces[1].material = $wainscot_corner
-	a = entities.add_line([$length,5.5,0],[$length,5.5,$wcht])
-	a.faces[0].material = $wainscot_corner
-	a = entities.add_line([$length,$width-5.5,0],[$length,$width-5.5,$wcht])
-	a.faces[1].material = $wainscot_corner
-	a = entities.add_line([$length-5.5,$width,0],[$length-5.5,$width,$wcht])
-	a.faces[0].material = $wainscot_corner
-	a = entities.add_line([0,$width-5.5,0],[0,$width-5.5,$wcht])
-	a.faces[0].material = $wainscot_corner
-	a = entities.add_line([5.5,$width,0],[5.5,$width,$wcht])
-	a.faces[1].material = $wainscot_corner
+    if($oj2==0)
+      $oj2 = 1
+    end
+
+      line11 = entities.add_line(top+v3, top+v3-Geom::Vector3d.new($oj2,0,0))
+      line33 = entities.add_line(pt1+v3,pt1+v3-Geom::Vector3d.new($oj2,0,0))
+      line55 = entities.add_line(p3+v3,p3+v3-Geom::Vector3d.new($oj2,0,0))
+
+
+    entities.transform_entities t, line4
+    entities.transform_entities t, line6
+
+      entities.transform_entities t, line111
+      entities.transform_entities t, line333
+      entities.transform_entities t, line555
+
+
+
+      entities.transform_entities t, line11
+      entities.transform_entities t, line33
+      entities.transform_entities t, line55
+
+    end
+    $wainscot_corner = "white"
+if($wcht>0)   
+  a = entities.add_line([0,5.5,0],[0,5.5,$wcht])
+  a.faces[1].material = $wainscot_corner
+  a = entities.add_line([5.5,0,0],[5.5,0,$wcht])
+  a.faces[0].material = $wainscot_corner
+  a = entities.add_line([$length-5.5,0,0],[$length-5.5,0,$wcht])
+  a.faces[1].material = $wainscot_corner
+  a = entities.add_line([$length,5.5,0],[$length,5.5,$wcht])
+  a.faces[0].material = $wainscot_corner
+  a = entities.add_line([$length,$width-5.5,0],[$length,$width-5.5,$wcht])
+  a.faces[1].material = $wainscot_corner
+  a = entities.add_line([$length-5.5,$width,0],[$length-5.5,$width,$wcht])
+  a.faces[0].material = $wainscot_corner
+  a = entities.add_line([0,$width-5.5,0],[0,$width-5.5,$wcht])
+  a.faces[0].material = $wainscot_corner
+  a = entities.add_line([5.5,$width,0],[5.5,$width,$wcht])
+  a.faces[1].material = $wainscot_corner
 end
 
+
+#load "a/wainscot.rb" if $wcht>0
 r = Geom::Transformation.rotation [0,0,0], [0,0,1],180.degrees
 t = Geom::Transformation.new [-100,-100,0]
 

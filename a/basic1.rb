@@ -684,4 +684,4 @@ if($wcht>0)
 end
 
 
-load "a/wainscot.rb" if $wcht>0
+#load "a/wainscot.rb" if $wcht>0

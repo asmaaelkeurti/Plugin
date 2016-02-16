@@ -64,7 +64,7 @@ def create_entity(model)
     @entity
 end
 
-@@defaults = {"w" => 4, "h" => 3, "t" => 1,"g"=>"No","c"=>"Brite","a"=>nil}
+@@defaults = {"w" => 4, "h" => 3, "t" => 1,"g"=>"No","c"=>"Brite","a"=>44}
 
 def default_parameters
     @@defaults.clone

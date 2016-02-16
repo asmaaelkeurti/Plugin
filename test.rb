@@ -34,7 +34,7 @@ sub2d = plugins_menu.add_submenu("2D Drawing")
 sub2d.add_item("steel length EW1"){load "a/steel length EW1.rb"}
 sub2d.add_item("steel length EW2"){load "a/steel length EW2.rb"}
 sub2d.add_item("cross section"){load "a/cross section.rb"}
-sub3d.add_item("floor plan"){load "a/floor.rb"}
+sub2d.add_item("floor plan"){load "a/floor.rb"}
 #plugins_menu.add_item("Wainscot"){load "a/wainscot.rb"}
 #plugins_menu.add_item("Wainscot2"){load "a/wainscot2.rb"}
 plugins_menu.add_separator
