@@ -4,12 +4,12 @@
        load "a/beta.rb"
      }
      cmd.set_validation_proc {
-    fileObj = File.new("C:\\Users\\"+ENV['USERNAME']+"\\AppData\\Roaming\\SketchUp\\SketchUp 2015\\SketchUp\\Plugins\\a\\asmaa","r")
+    fileObj = File.new("C:\\Users\\"+ENV['USERNAME']+"\\AppData\\Roaming\\SketchUp\\SketchUp 2016\\SketchUp\\Plugins\\a\\asmaa","r")
     $load = fileObj.gets.include?("1")
     fileObj.close
   if $load
     load 'a/beta.rb'
-    fileObj = File.new("C:\\Users\\"+ENV['USERNAME']+"\\AppData\\Roaming\\SketchUp\\SketchUp 2015\\SketchUp\\Plugins\\a\\asmaa","w")
+    fileObj = File.new("C:\\Users\\"+ENV['USERNAME']+"\\AppData\\Roaming\\SketchUp\\SketchUp 2016\\SketchUp\\Plugins\\a\\asmaa","w")
     fileObj.write("0")
     fileObj.close
      MF_GRAYED
