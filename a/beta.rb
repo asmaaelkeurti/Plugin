@@ -666,21 +666,6 @@ def build_lean(entities,r,t)
 	lean_group.entities.add_face(p1,p2,p6,p5).material = $faciaColor
   lean_group.entities.add_face(p1,p2,p3,p4)
 
-#add wall for Nolan
-  o1 = o
-  o2 = o1 + h
-  o3 = o2 + Geom::Vector3d.new(0,0,-($lean_length+$lean_overhang)*$lean_pitch/12)
-
-  lean_group.entities.add_face(o1,o2,o3).material = $wallColor 
-
-
-  v1 = Geom::Vector3d.new($lean_width,0,0)
-  o11 = o1 + v1
-  o22 = o2 + v1
-  o33 = o3 + v1
-
-  lean_group.entities.add_face(o11,o22,o33).material = $wallColor
-
 	if($lean_wall[0] == 1)
 		pl1 = [$lean_width, 0, 0]
 		pl2 = [$lean_width, $lean_length,0]
