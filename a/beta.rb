@@ -12,15 +12,39 @@ end
 
 application = WIN32OLE.new('Excel.Application')
 
-if File.exist?("C:\\Users\\" + ENV['USERNAME'] + "\\Documents\\test.xlsx")
-  workbook = application.Workbooks.Open("C:\\Users\\" + ENV['USERNAME'] + "\\Documents\\test.xlsx")
-elsif !File.directory?("C:\\Program Files (x86)\\Google\\Google SketchUp 8\\Plugins\\a")
-  #workbook = application.Workbooks.Open("C:\\Users\\"+ENV['USERNAME']+"\\AppData\\Roaming\\SketchUp\\SketchUp 2016\\SketchUp\\Plugins\\a\\test")
-  workbook = application.Workbooks.Open(Sketchup.find_support_file('Plugins')+'\\a\\test')
-else
-  workbook = application.Workbooks.Open("C:\\Program Files (x86)\\Google\\Google SketchUp 8\\Plugins\\a\\test")
+
+
+workbook_list=[]
+
+for file_path in ["C:\\Users\\" + ENV['USERNAME'] + "\\Documents\\test.xlsx",Sketchup.find_support_file('Plugins')+'\\a\\test.xlsx',"C:\\Program Files (x86)\\Google\\Google SketchUp 8\\Plugins\\a\\test.xlsx"]
+  if File.exist?(file_path)
+    workbook_list.push([file_path,File.mtime(file_path)])
+  end
 end
 
+workbook_list.sort!{|x,y|y[1]<=>x[1]}
+
+
+workbook = application.Workbooks.Open(workbook_list[0][0])
+
+
+#if File.exist?("C:\\Users\\" + ENV['USERNAME'] + "\\Documents\\test.xlsx")
+  #workbook = application.Workbooks.Open("C:\\Users\\" + ENV['USERNAME'] + "\\Documents\\test.xlsx")
+  #workbook_list.push([workbook,File.mtime("C:\\Users\\" + ENV['USERNAME'] + "\\Documents\\test.xlsx")]) 
+#end
+
+# if File.exist?(Sketchup.find_support_file('Plugins')+'\\a\\test.xlsx')
+#   #workbook = application.Workbooks.Open("C:\\Users\\"+ENV['USERNAME']+"\\AppData\\Roaming\\SketchUp\\SketchUp 2016\\SketchUp\\Plugins\\a\\test")
+#   if File.mtime(Sketchup.find_support_file('Plugins')+'\\a\\test.xlsx')>File.mtime("C:\\Users\\" + ENV['USERNAME'] + "\\Documents\\test.xlsx")
+#     workbook = application.Workbooks.Open(Sketchup.find_support_file('Plugins')+'\\a\\test')
+#   end
+# end
+
+# if File.exist?("C:\\Program Files (x86)\\Google\\Google SketchUp 8\\Plugins\\a\\test.xlsx")
+#   if File.mtime("C:\\Program Files (x86)\\Google\\Google SketchUp 8\\Plugins\\a\\test.xlsx") > File.mtime(Sketchup.find_support_file('Plugins')+'\\a\\test.xlsx') and File.mtime("C:\\Program Files (x86)\\Google\\Google SketchUp 8\\Plugins\\a\\test.xlsx") > File.mtime("C:\\Users\\" + ENV['USERNAME'] + "\\Documents\\test.xlsx")
+#     workbook = application.Workbooks.Open("C:\\Program Files (x86)\\Google\\Google SketchUp 8\\Plugins\\a\\test")
+#   end
+# end
 
 
 worksheet=workbook.Worksheets("Sheet2")
