@@ -26,6 +26,7 @@ workbook_list.sort!{|x,y|y[1]<=>x[1]}
 
 
 workbook = application.Workbooks.Open(workbook_list[0][0])
+UI.messagebox workbook_list[0][0]
 
 
 #if File.exist?("C:\\Users\\" + ENV['USERNAME'] + "\\Documents\\test.xlsx")

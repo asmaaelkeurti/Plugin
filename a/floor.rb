@@ -12,13 +12,18 @@ for i in 0..entities.length
 end
 
 
+workbook_list=[]
 application = WIN32OLE.new('Excel.Application')
-if !File.directory?("C:\\Program Files (x86)\\Google\\Google SketchUp 8\\Plugins\\a")
-  workbook = application.Workbooks.Open("C:\\Users\\"+ENV['USERNAME']+"\\AppData\\Roaming\\SketchUp\\SketchUp 2016\\SketchUp\\Plugins\\a\\test")
-else
-  workbook = application.Workbooks.Open("C:\\Program Files (x86)\\Google\\Google SketchUp 8\\Plugins\\a\\test")
+for file_path in ["C:\\Users\\" + ENV['USERNAME'] + "\\Documents\\test.xlsx",Sketchup.find_support_file('Plugins')+'\\a\\test.xlsx',"C:\\Program Files (x86)\\Google\\Google SketchUp 8\\Plugins\\a\\test.xlsx"]
+  if File.exist?(file_path)
+    workbook_list.push([file_path,File.mtime(file_path)])
+  end
 end
 
+workbook_list.sort!{|x,y|y[1]<=>x[1]}
+
+
+workbook = application.Workbooks.Open(workbook_list[0][0])
 
 
 worksheet=workbook.Worksheets("Sheet2")
@@ -1005,7 +1010,7 @@ if($side)
 		new_face = entities.add_face([a, $width - $offset_length, 0],[a, $width - $offset_length, $door_height],[a, $width - $offset_length - $door_width, $door_height],[a, $width - $offset_length - $door_width, 0])
  		new_face.pushpull -a, true
 		new_face.material = $overheadColor
-    if $wall_opening 
+    if $wall_opening == 1
       new_face.erase!
       entities.add_line([a, $width - $offset_length, 0],[a, $width - $offset_length - $door_width, 0]).erase!
     end
@@ -1152,7 +1157,7 @@ if($side)
 		new_face = entities.add_face([$offset_length, a, 0],[$offset_length, a, $door_height],[$offset_length + $door_width, a, $door_height],[$offset_length + $door_width, a, 0])
  		new_face.pushpull -a, true
 		new_face.material = $overheadColor
-    if $wall_opening
+    if $wall_opening == 1
       new_face.erase!
       entities.add_line([$offset_length, a, 0],[$offset_length + $door_width, a, 0]).erase!
     end
@@ -1218,7 +1223,7 @@ if($side)
 		new_face = entities.add_face([$length - $offset_length, $width - a, 0],[$length - $offset_length, $width - a, $door_height],[$length - $offset_length - $door_width, $width - a, $door_height],[$length - $offset_length - $door_width, $width - a, 0])
  		new_face.pushpull -a, true
 		new_face.material = $overheadColor
-    if $wall_opening
+    if $wall_opening == 1
       new_face.erase!
       entities.add_line([$length - $offset_length, $width - a, 0],[$length - $offset_length - $door_width, $width - a, 0])
     end
