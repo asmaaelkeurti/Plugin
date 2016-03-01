@@ -3637,6 +3637,7 @@ entities.transform_entities t, f
 #t = Geom::Transformation.new [$left, $bottom, ]
 Sketchup.send_action "viewTop:"
 Sketchup.active_model.active_view.camera.perspective = false
+Sketchup.active_model.active_view.zoom_extents
 
 
 if($north) 

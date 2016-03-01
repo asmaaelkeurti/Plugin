@@ -77,7 +77,7 @@ $wcht4 = worksheet.Cells(188,2).Value.to_f+0.01
 
 #$wcht1 = $wcht2 = $wcht3 = $wcht4 = $wcht
 #$wcht3 = 0.01
-
+$gutterApron = worksheet.Cells(200,2).Value.to_f
 $apron = worksheet.Cells(11,2).Value.to_f
 $heel = worksheet.Cells(12,2).Value.to_f
 $wallColor = worksheet.Cells(13,2).Value
@@ -3479,11 +3479,11 @@ end
   sw2.material = $wallColor
 
   faciaEW1 = entities.add_face get_facia_ew1_points($posX, $posY, $posZ)
-  faciaEW1.material = $faciaColor
+  faciaEW1.material = $rake
 
   faciaEW2 = entities.add_face get_facia_ew2_points($posX, $posY, $posZ)
-  faciaEW2.material = $faciaColor
-  faciaEW2.back_material = $faciaColor
+  faciaEW2.material = $rake
+  faciaEW2.back_material = $rake
 
   
    if (has_overhang1?)         
@@ -3515,18 +3515,18 @@ end
 
   ### draw facias end walls 
   faciaEW1right = entities.add_face get_facia_ew1_right_points($posX, $posY, $posZ)
-  faciaEW1right.material = $faciaColor
+  faciaEW1right.material = $gutterApron#$faciaColor
   
   faciaEW1left = entities.add_face get_facia_ew1_left_points($posX, $posY, $posZ)
-  faciaEW1left.material = $faciaColor
+  faciaEW1left.material = $gutterApron#$faciaColor
 
   # Add the face to the entities in the model
   faciaEW2right = entities.add_face get_facia_ew2_right_points($posX, $posY, $posZ)
-  faciaEW2right.material = $faciaColor
+  faciaEW2right.material = $gutterApron
   
   # Add the face to the entities in the model
   faciaEW2left = entities.add_face get_facia_ew2_left_points($posX, $posY, $posZ)
-  faciaEW2left.material = $faciaColor
+  faciaEW2left.material = $gutterApron
 
   ### Draw the roof.
   roofSW1 = entities.add_face get_roof_sw1_points($posX, $posY, $posZ)
