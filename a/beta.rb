@@ -26,7 +26,6 @@ workbook_list.sort!{|x,y|y[1]<=>x[1]}
 
 
 workbook = application.Workbooks.Open(workbook_list[0][0])
-UI.messagebox workbook_list[0][0]
 
 
 #if File.exist?("C:\\Users\\" + ENV['USERNAME'] + "\\Documents\\test.xlsx")
@@ -1356,6 +1355,8 @@ if($side)
 		else
 			for i in 0..($panel-1)
 				l = entities.add_line([a, $width - $offset_length, $door_height/$panel * (i+1)],[a, $width - $door_width - $offset_length, $door_height/$panel * (i+1)])
+        line = entities.add_face([a, $width - $offset_length, $door_height/$panel * (i+1)],[a, $width - $door_width - $offset_length, $door_height/$panel * (i+1)],[a, $width - $door_width - $offset_length, $door_height/$panel * (i+1) + 1],[a, $width - $offset_length, $door_height/$panel * (i+1)+1])
+        line.pushpull -0.75
 				#group_array.push(l)
 			end
 		end
@@ -1458,7 +1459,8 @@ if($side)
 			new_face1.erase!
 		else
 			for i in 0..($panel-1)
-				entities.add_line([$length-a, $door_width + $offset_length, $door_height/$panel * (i+1)],[$length-a, $offset_length, $door_height/$panel * (i+1)])
+				line = entities.add_face([$length-a, $door_width + $offset_length, $door_height/$panel * (i+1)],[$length-a, $offset_length, $door_height/$panel * (i+1)],[$length-a, $offset_length, $door_height/$panel * (i+1)+1],[$length-a, $door_width + $offset_length, $door_height/$panel * (i+1)+1])
+        line.pushpull -0.75
 			end
 		end
 		if($dutch > 0)
@@ -1544,7 +1546,7 @@ if($side)
 			new_face1.erase!
 		else
 			for i in 0..($panel-1)
-				entities.add_line([$offset_length,a,$door_height/$panel * (i+1)],[$offset_length+$door_width,a, $door_height/$panel * (i+1)])
+				entities.add_face([$offset_length,a,$door_height/$panel * (i+1)],[$offset_length+$door_width,a, $door_height/$panel * (i+1)],[$offset_length+$door_width,a, $door_height/$panel * (i+1)+1],[$offset_length,a,$door_height/$panel * (i+1)+1]).pushpull -0.75
 			end
 		end
 		
@@ -1634,7 +1636,7 @@ if($side)
 			new_face1.erase!
 		else
 			for i in 0..($panel-1)
-				entities.add_line([$length-($offset_length + $door_width), $width - a,$door_height/$panel * (i+1)],[$length-$offset_length, $width - a, $door_height/$panel * (i+1)])
+				entities.add_face([$length-($offset_length + $door_width), $width - a,$door_height/$panel * (i+1)],[$length-$offset_length, $width - a, $door_height/$panel * (i+1)],[$length-$offset_length, $width - a, $door_height/$panel * (i+1)+1],[$length-($offset_length + $door_width), $width - a,$door_height/$panel * (i+1)+1]).pushpull -0.75
 			end
 		end
 		
@@ -2114,12 +2116,26 @@ def build_cupola(a, entities, pitch, t, roof, wall)
 		face = cupola_group.entities.add_face([-o,-o,a*$pitch/2/12 + 4 + a],[-o,a+o,a*$pitch/2/12 + 4 + a],[a+o,a+o,a*$pitch/2/12 + 4 + a],[a+o,0-o,a*$pitch/2/12 + 4 + a])
 		face.material = roof
 		pt = Geom::Point3d.new(a/2,a/2, a*3/2+ a*8/2/12 + 4 + a/2)
-		cupola_group.entities.add_line(pt,pt+Geom::Vector3d.new(0,0,-a*3/4))
-		cupola_group.entities.add_line(pt,pt+Geom::Vector3d.new(a/4,0,0))
-		cupola_group.entities.add_line(pt,pt+Geom::Vector3d.new(-a/4,0,0))
-		cupola_group.entities.add_line(pt,pt+Geom::Vector3d.new(0,a/4,0))
-		cupola_group.entities.add_line(pt,pt+Geom::Vector3d.new(0,-a/4,0))
-		cupola_group.entities.add_line(pt,pt+Geom::Vector3d.new(0,0,a/4))
+    v1 = Geom::Vector3d.new(0,0,0.1)
+    v2 = Geom::Vector3d.new(0.1,0,0)
+		z = cupola_group.entities.add_face(pt,pt+Geom::Vector3d.new(0,0,-a*3/4),pt+Geom::Vector3d.new(0,0,-a*3/4)+v2,pt+v2)
+    z.material = "black"
+    z.pushpull 0.1
+		z = cupola_group.entities.add_face(pt,pt+Geom::Vector3d.new(a/4,0,0),pt+Geom::Vector3d.new(a/4,0,0)+v1,pt+v1)
+    z.material = "black"
+    z.pushpull 0.1
+		z = cupola_group.entities.add_face(pt,pt+Geom::Vector3d.new(-a/4,0,0),pt+Geom::Vector3d.new(-a/4,0,0)+v1,pt+v1)
+    z.material = "black"
+    z.pushpull 0.1
+		z = cupola_group.entities.add_face(pt,pt+Geom::Vector3d.new(0,a/4,0),pt+Geom::Vector3d.new(0,a/4,0)+v1,pt+v1)
+    z.material = "black"
+    z.pushpull 0.1
+		z = cupola_group.entities.add_face(pt,pt+Geom::Vector3d.new(0,-a/4,0),pt+Geom::Vector3d.new(0,-a/4,0)+v1,pt+v1)
+    z.material = "black"
+    z.pushpull 0.1
+		z = cupola_group.entities.add_face(pt,pt+Geom::Vector3d.new(0,0,a/4),pt+Geom::Vector3d.new(0,0,a/4)+v2,pt+v2)
+    z.material = "black"
+    z.pushpull 0.1
 		entities.transform_entities t, cupola_group
 
 

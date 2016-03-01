@@ -44,12 +44,13 @@ def create_entities(data, container)
     type = data["t"]
 	grid = data["g"]
 	above = data["a"]
+	shutter = data["s"]
 	if colorOptions.include?(data["c"])
 		color = "Kynar " + data["c"] + " Trim"
 	else
 		color = data["c"] + " Trim"
 	end
-    Window1.create_window(width, height, type, grid, container, color, above)
+    Window1.create_window(width, height, type, grid, container, color, above,shutter)
 end
 
 def create_entity(model)
@@ -64,7 +65,7 @@ def create_entity(model)
     @entity
 end
 
-@@defaults = {"w" => 4, "h" => 3, "t" => 1,"g"=>"No","c"=>"Brite","a"=>44}
+@@defaults = {"w" => 4, "h" => 3, "t" => 1,"g"=>"No","c"=>"Brite","a"=>44,"s"=>"No"}
 
 def default_parameters
     @@defaults.clone
@@ -98,13 +99,13 @@ def prompt(operation)
     end
     title = "(* values will not import)"
     #title = operation + " " + self.class.name
-    prompts = ["Width (Feet)", "Height (Feet)", "Type* ","Grid* ","Color* ","Height Above Ground"]
+    prompts = ["Width (Feet)", "Height (Feet)", "Type* ","Grid* ","Color* ","Height Above Ground","Shutter"]
     types = ["Verticle", "Slider", "Fixed"]
 	boolean = ["Yes","No"]
 
 	csColorOptions = ["Brite", "Roman", "Clay", "Beige", "Bronze", "Ash", "Sand", "Autumn", "Tudor", "Smoke", "Evergreen", "BrandyWin", "Terratone", "Matte Black", "Antique Ivory", "Hartford Green","Black","Charcoal","Taupe","Gray","Alamo","Brilliant","Arctic","Forest","Hunter","Gold","Crimson","Rustic","Burgundy","Gallery","Ocean","Ivory","Light Stone","Tan","Brown","Burnished Slate","Copper Metallic"]
-    values = [data["w"], data["h"], types[data["t"]],data["g"],data["c"],data["a"]]
-    popups = [nil, nil, types.join("|"),boolean.join("|"), csColorOptions.join("|"),nil]
+    values = [data["w"], data["h"], types[data["t"]],data["g"],data["c"],data["a"],data["s"]]
+    popups = [nil, nil, types.join("|"),boolean.join("|"), csColorOptions.join("|"),nil,boolean.join("|")]
     results = inputbox( prompts, values, popups, title )
     return nil if not results
     
@@ -116,6 +117,7 @@ def prompt(operation)
 	data["g"] = results[3]
 	data["c"] = results[4]
 	data["a"] = results[5]
+	data["s"] = results[6]
     
     # update the defaults values
     if( not @entity )
@@ -179,7 +181,7 @@ end
 
 #-----------------------------------
 # Create a basic window
-def Window1.create_window(width, height, type, grid,container, color, above)
+def Window1.create_window(width, height, type, grid,container, color, above,shutter)
 		@above = above.to_f
 		@width = width
 		@height = height
@@ -313,6 +315,18 @@ def Window1.create_window(width, height, type, grid,container, color, above)
 		container.add_line(origin + Geom::Vector3d.new((width -2*w)*3/4,0,0), origin + Geom::Vector3d.new((width -2*w)*3/4,0,0) + Geom::Vector3d.new(0,height-2*w,0))
 		container.add_line(origin + Geom::Vector3d.new(0,(height-2*w)/4,0), origin + Geom::Vector3d.new(0,(height-2*w)/4,0) +  Geom::Vector3d.new(width -2*w,0,0))
 		container.add_line(origin + Geom::Vector3d.new(0,(height-2*w)*3/4,0), origin + Geom::Vector3d.new(0,(height-2*w)*3/4,0) +  Geom::Vector3d.new(width -w*2,0,0))
+	end
+
+	if shutter == "Yes"
+		o = Geom::Point3d.new(0,0,0)
+		v1 = Geom::Vector3d.new(0,@height,0)
+		v2 = Geom::Vector3d.new(-14,0,0)
+
+		container.add_face(o,o+v1,o+v2+v1,o+v2).back_material = @color
+
+		o1 = Geom::Point3d.new(@width,0,0)
+
+		container.add_face(o1,o1+v1,o1+v1-v2,o1-v2).back_material = @color
 	end
 	
 end
